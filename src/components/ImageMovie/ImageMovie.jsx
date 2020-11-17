@@ -1,9 +1,9 @@
 import React from 'react';
 
-import {Wrapper, Content, Text} from './style';
+import { Wrapper, Content, Text } from './styles.js';
 
- const ImageMovie = ({image, title, text}) => (
-  <Wrapper image={image}>
+const ImageMovie = ({ image, title, text }) => (
+	<Wrapper image={image}>
 		<Content>
 			<Text>
 				<h1>{title}</h1>
@@ -11,8 +11,6 @@ import {Wrapper, Content, Text} from './style';
 			</Text>
 		</Content>
 	</Wrapper>
-)
-
-
+);
 
 export default ImageMovie;

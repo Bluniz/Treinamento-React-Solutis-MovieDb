@@ -14,6 +14,7 @@ export const Wrapper = styled.div`
 	height: 600px;
 	position: relative;
 	animation: animateImageMovie 1s;
+
 	@keyframes animateImageMovie {
 		from {
 			opacity: 0;
@@ -38,18 +39,23 @@ export const Text = styled.div`
 	margin-right: 20px;
 	min-height: 100px;
 	color: var(--white);
+
 	h1 {
 		font-size: var(--fontSuperBig);
+
 		@media screen and (max-width: 720px) {
 			font-size: var(--fontBig);
 		}
 	}
+
 	p {
 		font-size: var(--fontMed);
+
 		@media screen and (max-width: 720px) {
 			font-size: var(--fontSmall);
 		}
 	}
+
 	@media screen and (max-width: 720px) {
 		max-width: 100%;
 	}

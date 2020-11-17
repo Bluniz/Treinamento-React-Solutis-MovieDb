@@ -1,51 +1,52 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react'
 
-import API from '../service/API';
+import API from '../service/API'
 
 const initialState = {
-  page: 0,
-  results: [],
-  total_pages: 0,
-  total_results: 0,
-}
-
- 
-
+    page: 0,
+    results: [],
+    total_pages: 0,
+    total_results: 0,
+};
 
 export const useHomeFetch = () => {
-  const [movies, setMovies] = useState();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+
+    const [movies, setMovies] = useState(initialState);
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(false)
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isLoadingMore, setIsLoadingMore] = useState(true);
+
+    const fetchMovies = async (page, searchTerm = '') => {
+        try {
+            setError(false)
+            setLoading(true)
+
+            const moviesAPI = await API.fetchMovies(searchTerm, page)
+
+            setMovies((prev) => ({
+                ...moviesAPI,
+                results:
+                    page > 1
+                        ? [...prev.results, ...moviesAPI.results]
+                        : [...moviesAPI.results],
+            }));
+
+        } catch (error) {
+            setError(true)
+            console.log(error)
+        }
+        setLoading(false);
+    }
 
 
-const fetchMovies = async (page, searchTerm ='') => {
-  try {
+    useEffect(() => {
+        if(!isLoadingMore) return
 
-    setError(false);
-    setLoading(true);
+        fetchMovies(movies.page + 1, searchTerm)
+        setIsLoadingMore(false)
+    }, [isLoadingMore, searchTerm, movies.page, fetchMovies])
 
-    const moviesAPI = await API.fetchMovies(searchTerm, page);
-    setMovies((prev) => ({
-      ...moviesAPI,
-      results:
-        page > 1 
-          ? [...prev.results, ...moviesAPI.results]
-          : [...moviesAPI.results],
-    }))
-  } catch(error){
-    setError(error)
-  }
+    return { movies, loading, error, searchTerm, setSearchTerm, setIsLoadingMore }
 
-  setLoading(false);
-}
-
-
-useEffect(()=> {
-  fetchMovies(1)
-}, [])
-
-
-
-return {movies, loading, error}
-
-}
+} 
